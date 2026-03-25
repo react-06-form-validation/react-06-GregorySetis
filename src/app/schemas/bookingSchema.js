@@ -1,13 +1,45 @@
 import { z } from 'zod';
 
-// Starter schema for the task. Implement full validation rules from README.
-export const createBookingSchema = () =>
+export const createBookingSchema = (availableTimeSlots = []) =>
   z.object({
-    bookerName: z.string(),
-    bookerEmail: z.string().optional(),
-    eventName: z.string(),
-    eventDate: z.any(),
-    numberOfGuests: z.any(),
-    timeSlot: z.string(),
-    eventLink: z.string(),
+    bookerName: z
+      .string()
+      .min(2, 'Booker name must be at least 2 characters long'),
+
+    bookerEmail: z
+      .string()
+      .email('Invalid email address')
+      .optional()
+      .or(z.literal('')), // allow empty string
+
+    eventName: z
+      .string()
+      .min(2, 'Event name must be at least 2 characters long'),
+
+    eventDate: z
+      .string()
+      .refine((date) => {
+        if (!date) return false;
+        const selected = new Date(date);
+        const now = new Date();
+        return selected > now;
+      }, 'Event date must be in the future'),
+
+    numberOfGuests: z
+      .coerce.number({
+        invalid_type_error: 'Number of Guests must be integer',
+      })
+      .int('Number of Guests must be integer')
+      .min(1, 'Number of Guests must be at least 1')
+      .max(10, 'Number of Guests must be less than or equal to 10'),
+
+    timeSlot: z
+      .string()
+      .refine((val) => availableTimeSlots.includes(val), {
+        message: 'Selected time slot is unavailable',
+      }),
+
+    eventLink: z
+      .string()
+      .url('Invalid URL. Please enter a valid event link'),
   });
