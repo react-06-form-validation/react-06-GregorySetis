@@ -7,23 +7,23 @@ export const createBookingSchema = (availableTimeSlots = []) =>
       .min(2, 'Booker name must be at least 2 characters long'),
 
     bookerEmail: z
-      .string()
-      .email('Invalid email address')
-      .optional()
-      .or(z.literal('')), // allow empty string
+      .union([
+        z.string().email('Invalid email address'),
+        z.literal(''),
+        z.undefined(),
+      ]),
 
     eventName: z
       .string()
       .min(2, 'Event name must be at least 2 characters long'),
 
     eventDate: z
-      .string()
-      .refine((date) => {
-        if (!date) return false;
-        const selected = new Date(date);
-        const now = new Date();
-        return selected > now;
-      }, 'Event date must be in the future'),
+      .date({
+        invalid_type_error: 'Event date must be in the future',
+      })
+      .refine((date) => date > new Date(), {
+        message: 'Event date must be in the future',
+      }),
 
     numberOfGuests: z
       .coerce.number({

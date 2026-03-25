@@ -35,51 +35,86 @@ export default function BookingForm() {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      {/* Booker Name */}
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Booker Name</label>
-        <input {...register('bookerName')} className={styles.input} />
+        <label className={styles.label} htmlFor="bookerName">
+          Booker Name
+        </label>
+        <input
+          id="bookerName"
+          className={styles.input}
+          {...register('bookerName')}
+        />
         <ErrorMessage message={errors.bookerName?.message} />
       </div>
 
+      {/* Booker Email */}
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Booker Email</label>
+        <label className={styles.label} htmlFor="bookerEmail">
+          Booker Email
+        </label>
         <input
-          {...register('bookerEmail')}
-          className={styles.input}
+          id="bookerEmail"
           type="email"
+          className={styles.input}
+          {...register('bookerEmail')}
         />
         <ErrorMessage message={errors.bookerEmail?.message} />
       </div>
 
+      {/* Event Name */}
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Event Name</label>
-        <input {...register('eventName')} className={styles.input} />
+        <label className={styles.label} htmlFor="eventName">
+          Event Name
+        </label>
+        <input
+          id="eventName"
+          className={styles.input}
+          {...register('eventName')}
+        />
         <ErrorMessage message={errors.eventName?.message} />
       </div>
 
+      {/* Event Date */}
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Event Date</label>
+        <label className={styles.label} htmlFor="eventDate">
+          Event Date
+        </label>
         <input
-          {...register('eventDate')}
-          className={styles.input}
+          id="eventDate"
           type="date"
+          className={styles.input}
+          {...register('eventDate', {
+            valueAsDate: true, // 🔥 critical fix
+          })}
         />
         <ErrorMessage message={errors.eventDate?.message} />
       </div>
 
+      {/* Number of Guests */}
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Number of Guests</label>
+        <label className={styles.label} htmlFor="numberOfGuests">
+          Number of Guests
+        </label>
         <input
-          {...register('numberOfGuests')}
-          className={styles.input}
+          id="numberOfGuests"
           type="number"
+          className={styles.input}
+          {...register('numberOfGuests')}
         />
         <ErrorMessage message={errors.numberOfGuests?.message} />
       </div>
 
+      {/* Time Slot */}
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Time Slot</label>
-        <select {...register('timeSlot')} className={styles.input}>
+        <label className={styles.label} htmlFor="timeSlot">
+          Time Slot
+        </label>
+        <select
+          id="timeSlot"
+          className={styles.input}
+          {...register('timeSlot')}
+        >
           <option value="">Select a time slot</option>
           {timeSlots.map((slot) => (
             <option key={slot} value={slot}>
@@ -90,12 +125,16 @@ export default function BookingForm() {
         <ErrorMessage message={errors.timeSlot?.message} />
       </div>
 
+      {/* Event Link */}
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Event Link</label>
+        <label className={styles.label} htmlFor="eventLink">
+          Event Link (Online)
+        </label>
         <input
-          {...register('eventLink')}
-          className={styles.input}
+          id="eventLink"
           type="url"
+          className={styles.input}
+          {...register('eventLink')}
         />
         <ErrorMessage message={errors.eventLink?.message} />
       </div>
